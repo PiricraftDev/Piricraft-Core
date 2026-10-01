@@ -1,5 +1,6 @@
 package fr.piricraft.piricraftCore;
 
+import fr.piricraft.piricraftCore.commands.EcoAdminCommand;
 import fr.piricraft.piricraftCore.commands.MoneyCommand;
 import fr.piricraft.piricraftCore.commands.PayCommand;
 import fr.piricraft.piricraftCore.commands.completers.GlobalTabCompleter;
@@ -41,6 +42,11 @@ public final class PiricraftCore extends JavaPlugin {
         if (getCommand("pay") != null) {
             getCommand("pay").setExecutor(new PayCommand(this.economyManager));
             getCommand("pay").setTabCompleter(globalTabCompleter);
+        }
+
+        if (getCommand("eco") != null) {
+            getCommand("eco").setExecutor(new EcoAdminCommand(this.economyManager));
+            getCommand("eco").setTabCompleter(globalTabCompleter);
         }
     }
 

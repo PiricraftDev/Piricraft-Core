@@ -46,7 +46,7 @@ public class GlobalTabCompleter implements TabCompleter {
 
             case "ecoadmin":
                 if (args.length == 1) {
-                    StringUtil.copyPartialMatches(args[0], Arrays.asList("give", "take", "set", "reset"), completions);
+                    StringUtil.copyPartialMatches(args[0], Arrays.asList("give", "take", "set"), completions);
                 } else if (args.length == 2) {
                     List<String> players = new ArrayList<>();
                     for (Player p : Bukkit.getOnlinePlayers()) {

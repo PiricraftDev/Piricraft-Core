@@ -9,15 +9,35 @@ libraries:
   - org.xerial:sqlite-jdbc:3.50.3.0
 
 authors: [ Lepipassier ]
-website: https://github.com/Piricraft
+website: https://github.com/PiricraftDev/Piricraft-Core
 
 commands:
   money:
-    description: View your own balance, or player's balance.
+    description: View your own balance, or another player's balance.
     aliases:
       - bal
       - balance
-    usage: /money [joueur]
+    usage: /money [player]
+    permission: piricraft.command.money
+    permission-message: "<red>You do not have permission to execute this command.</red>"
   pay:
-    description: Transfer money to player.
-    usage: /pay [joueur] [montant]
+    description: Transfer money to another player.
+    usage: /pay [player] [amount]
+    permission: piricraft.command.pay
+    permission-message: "<red>You do not have permission to execute this command.</red>"
+  eco:
+    description: Allow to take, give, or set a player's balance.
+    usage: /eco [give|take|set] [target] [amount]
+    permission: piricraft.command.eco
+    permission-message: "<red>Only administrators can execute this command.</red>"
+
+permissions:
+  piricraft.command.money:
+    description: Allows players to check their own or another player's balance.
+    default: true
+  piricraft.command.pay:
+    description: Allows players to send money to each other.
+    default: true
+  piricraft.command.eco:
+    description: Full access to administrative economy commands.
+    default: op
