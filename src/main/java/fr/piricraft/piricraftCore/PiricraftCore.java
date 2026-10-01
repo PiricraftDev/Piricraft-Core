@@ -2,11 +2,13 @@ package fr.piricraft.piricraftCore;
 
 import fr.piricraft.piricraftCore.listeners.PlayerConnectionListener;
 import fr.piricraft.piricraftCore.managers.DatabaseManager;
+import fr.piricraft.piricraftCore.managers.EconomyManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class PiricraftCore extends JavaPlugin {
 
     private DatabaseManager databaseManager;
+    private EconomyManager economyManager;
 
     @Override
     public void onEnable() {
@@ -26,5 +28,14 @@ public final class PiricraftCore extends JavaPlugin {
     @Override
     public void onDisable() {
         getLogger().info("PiricraftCore has stopped !");
+    }
+
+    // Getters
+    public DatabaseManager getDatabaseManager() {
+        return databaseManager;
+    }
+
+    public EconomyManager getEconomyManager() {
+        return economyManager;
     }
 }
