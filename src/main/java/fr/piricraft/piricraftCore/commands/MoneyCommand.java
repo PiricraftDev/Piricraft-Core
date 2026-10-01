@@ -24,7 +24,7 @@ public class MoneyCommand implements CommandExecutor {
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
 
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Only players can execute this command", NamedTextColor.RED));
+            sender.sendMessage(Component.text("Only players can execute this command !", NamedTextColor.RED));
             return true;
         }
 
@@ -49,6 +49,7 @@ public class MoneyCommand implements CommandExecutor {
             return true;
         }
 
+        player.sendMessage(miniMessage.deserialize("<red>Utilisation : /money [joueur]</red>"));
         return true;
     }
 }

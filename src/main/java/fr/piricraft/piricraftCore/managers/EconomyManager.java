@@ -12,32 +12,55 @@ public class EconomyManager {
         this.databaseManager = databaseManager;
     }
 
-    public double getBalance(UUID uuid) {
+    public synchronized double getBalance(UUID uuid) {
         PlayerProfile profile = databaseManager.getProfileFromCache(uuid);
         return profile != null ? profile.getBalance() : 0.0;
     }
 
-    public boolean hasMoney(UUID uuid, double amount) {
+    public synchronized boolean hasMoney(UUID uuid, double amount) {
         PlayerProfile profile = databaseManager.getProfileFromCache(uuid);
         return profile != null && profile.hasEnoughMoney(amount);
     }
 
-    public void depositMoney(UUID uuid, double amount) {
+    public synchronized void depositMoney(UUID uuid, double amount) {
         PlayerProfile profile = databaseManager.getProfileFromCache(uuid);
         if (profile != null) {
             profile.credit(amount);
+            databaseManager.saveProfileAsync(profile);
         }
     }
 
-    public boolean withdrawMoney(UUID uuid, double amount) {
+    public synchronized boolean withdrawMoney(UUID uuid, double amount) {
         PlayerProfile profile = databaseManager.getProfileFromCache(uuid);
-        return profile != null && profile.debit(amount);
+        if (profile == null || !profile.debit(amount)) {
+            return false;
+        }
+        databaseManager.saveProfileAsync(profile);
+        return true;
     }
 
-    public void setBalance(UUID uuid, double amount) {
+    public synchronized void setBalance(UUID uuid, double amount) {
         PlayerProfile profile = databaseManager.getProfileFromCache(uuid);
         if (profile != null) {
             profile.setBalance(amount);
+            databaseManager.saveProfileAsync(profile);
         }
+    }
+
+    public synchronized boolean transferMoney(UUID fromUuid, UUID toUuid, double amount) {
+        if (fromUuid.equals(toUuid) || !Double.isFinite(amount) || amount <= 0) {
+            return false;
+        }
+        PlayerProfile from = databaseManager.getProfileFromCache(fromUuid);
+        PlayerProfile to = databaseManager.getProfileFromCache(toUuid);
+        if (from == null || to == null || !from.hasEnoughMoney(amount) || !Double.isFinite(to.getBalance() + amount)) {
+            return false;
+        }
+        if (!from.debit(amount)) {
+            return false;
+        }
+        to.credit(amount);
+        databaseManager.saveProfilesAsync(from, to);
+        return true;
     }
 }

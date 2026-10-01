@@ -1,6 +1,8 @@
 package fr.piricraft.piricraftCore;
 
 import fr.piricraft.piricraftCore.commands.MoneyCommand;
+import fr.piricraft.piricraftCore.commands.PayCommand;
+import fr.piricraft.piricraftCore.commands.completers.GlobalTabCompleter;
 import fr.piricraft.piricraftCore.listeners.PlayerConnectionListener;
 import fr.piricraft.piricraftCore.managers.DatabaseManager;
 import fr.piricraft.piricraftCore.managers.EconomyManager;
@@ -15,7 +17,7 @@ public final class PiricraftCore extends JavaPlugin {
     public void onEnable() {
         getLogger().info("PiricraftCore has started !");
 
-        // Initialize manager
+        // Initialize managers
         this.databaseManager = new DatabaseManager(this);
         this.databaseManager.initDatabase();
 
@@ -27,14 +29,26 @@ public final class PiricraftCore extends JavaPlugin {
                 this
         );
 
-        // Register commands
+        // Initialize tab completer
+        GlobalTabCompleter globalTabCompleter = new GlobalTabCompleter();
+
+        // Register commands & tab completers
         if (getCommand("money") != null) {
             getCommand("money").setExecutor(new MoneyCommand(this.economyManager));
+            getCommand("money").setTabCompleter(globalTabCompleter);
+        }
+
+        if (getCommand("pay") != null) {
+            getCommand("pay").setExecutor(new PayCommand(this.economyManager));
+            getCommand("pay").setTabCompleter(globalTabCompleter);
         }
     }
 
     @Override
     public void onDisable() {
+        if (databaseManager != null) {
+            databaseManager.closeConnection();
+        }
         getLogger().info("PiricraftCore has stopped !");
     }
 

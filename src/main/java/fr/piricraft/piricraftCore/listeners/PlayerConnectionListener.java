@@ -18,7 +18,12 @@ public class PlayerConnectionListener implements Listener {
     // Load profile from DB, or create if no exists
     @EventHandler
     public void onPreLogin(AsyncPlayerPreLoginEvent event) {
-        databaseManager.loadProfileAsync(event.getUniqueId(), event.getName());
+        try {
+            databaseManager.loadProfileAsync(event.getUniqueId(), event.getName()).join();
+        } catch (RuntimeException e) {
+            event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_OTHER,
+                    "Impossible de charger vos données. Réessayez dans quelques instants.");
+        }
     }
 
     // Unload profile

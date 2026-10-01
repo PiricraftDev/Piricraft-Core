@@ -13,7 +13,7 @@ public class PlayerProfile {
     public PlayerProfile(UUID playerUuid, String playerName, double balance, long firstJoinTimestamp) {
         this.playerUuid = playerUuid;
         this.playerName = playerName;
-        this.balance = balance;
+        this.balance = Double.isFinite(balance) && balance >= 0 ? balance : 0;
         this.firstJoinTimestamp = firstJoinTimestamp;
     }
 
@@ -31,7 +31,7 @@ public class PlayerProfile {
         return playerName;
     }
 
-    public double getBalance() {
+    public synchronized double getBalance() {
         return balance;
     }
 
@@ -44,22 +44,24 @@ public class PlayerProfile {
         this.playerName = playerName;
     }
 
-    public void setBalance(double balance) {
-        this.balance = balance;
+    public synchronized void setBalance(double balance) {
+        if (Double.isFinite(balance) && balance >= 0) {
+            this.balance = balance;
+        }
     }
 
     // Method about balance
-    public boolean hasEnoughMoney(double amount) {
-        return this.balance >= amount;
+    public synchronized boolean hasEnoughMoney(double amount) {
+        return Double.isFinite(amount) && amount >= 0 && this.balance >= amount;
     }
 
-    public void credit(double amount) {
-        if (amount <= 0) return;
+    public synchronized void credit(double amount) {
+        if (!Double.isFinite(amount) || amount <= 0 || !Double.isFinite(this.balance + amount)) return;
         this.balance += amount;
     }
 
-    public boolean debit(double amount) {
-        if (amount <= 0 || !hasEnoughMoney(amount)) {
+    public synchronized boolean debit(double amount) {
+        if (!Double.isFinite(amount) || amount <= 0 || this.balance < amount) {
             return false;
         }
         this.balance -= amount;

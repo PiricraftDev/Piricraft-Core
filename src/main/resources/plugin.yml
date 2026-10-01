@@ -5,6 +5,8 @@ version: '${version}'
 main: fr.piricraft.piricraftCore.PiricraftCore
 api-version: '26.2'
 load: POSTWORLD
+libraries:
+  - org.xerial:sqlite-jdbc:3.50.3.0
 
 authors: [ Lepipassier ]
 website: https://github.com/Piricraft
@@ -16,3 +18,6 @@ commands:
       - bal
       - balance
     usage: /money [joueur]
+  pay:
+    description: Transfer money to player.
+    usage: /pay [joueur] [montant]
