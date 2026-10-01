@@ -19,6 +19,8 @@ public final class PiricraftCore extends JavaPlugin {
         this.databaseManager = new DatabaseManager(this);
         this.databaseManager.initDatabase();
 
+        this.economyManager = new EconomyManager(this.databaseManager);
+
         // Register listeners
         getServer().getPluginManager().registerEvents(
                 new PlayerConnectionListener(this.databaseManager),
