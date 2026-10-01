@@ -44,7 +44,7 @@ public class GlobalTabCompleter implements TabCompleter {
                 }
                 break;
 
-            case "ecoadmin":
+            case "eco":
                 if (args.length == 1) {
                     StringUtil.copyPartialMatches(args[0], Arrays.asList("give", "take", "set"), completions);
                 } else if (args.length == 2) {
