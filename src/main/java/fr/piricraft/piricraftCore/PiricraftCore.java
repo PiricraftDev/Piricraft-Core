@@ -6,11 +6,11 @@ public final class PiricraftCore extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
+        getLogger().info("PiricraftCore has started !");
     }
 
     @Override
     public void onDisable() {
-        // Plugin shutdown logic
+        getLogger().info("PiricraftCore has stopped !");
     }
 }
