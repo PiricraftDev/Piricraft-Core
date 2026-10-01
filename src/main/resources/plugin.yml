@@ -1,0 +1,10 @@
+name: PiricraftCore
+description: $description
+version: '${version}'
+
+main: fr.piricraft.piricraftCore.PiricraftCore
+api-version: '26.2'
+load: POSTWORLD
+
+authors: [ Lepipassier ]
+website: https://github.com/Piricraft
