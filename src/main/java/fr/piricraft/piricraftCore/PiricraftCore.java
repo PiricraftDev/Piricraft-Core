@@ -4,6 +4,7 @@ import fr.piricraft.piricraftCore.commands.EcoAdminCommand;
 import fr.piricraft.piricraftCore.commands.MoneyCommand;
 import fr.piricraft.piricraftCore.commands.PayCommand;
 import fr.piricraft.piricraftCore.commands.completers.GlobalTabCompleter;
+import fr.piricraft.piricraftCore.listeners.MenuListener;
 import fr.piricraft.piricraftCore.listeners.PlayerConnectionListener;
 import fr.piricraft.piricraftCore.managers.DatabaseManager;
 import fr.piricraft.piricraftCore.managers.EconomyManager;
@@ -25,10 +26,8 @@ public final class PiricraftCore extends JavaPlugin {
         this.economyManager = new EconomyManager(this.databaseManager);
 
         // Register listeners
-        getServer().getPluginManager().registerEvents(
-                new PlayerConnectionListener(this.databaseManager),
-                this
-        );
+        getServer().getPluginManager().registerEvents(new PlayerConnectionListener(this.databaseManager), this);
+        getServer().getPluginManager().registerEvents(new MenuListener(), this);
 
         // Initialize tab completer
         GlobalTabCompleter globalTabCompleter = new GlobalTabCompleter();
