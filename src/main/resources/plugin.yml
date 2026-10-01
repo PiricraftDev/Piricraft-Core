@@ -8,3 +8,11 @@ load: POSTWORLD
 
 authors: [ Lepipassier ]
 website: https://github.com/Piricraft
+
+commands:
+  money:
+    description: View your own balance, or player's balance.
+    aliases:
+      - bal
+      - balance
+    usage: /money [joueur]

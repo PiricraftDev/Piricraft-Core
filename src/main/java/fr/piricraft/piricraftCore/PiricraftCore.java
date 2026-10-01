@@ -1,5 +1,6 @@
 package fr.piricraft.piricraftCore;
 
+import fr.piricraft.piricraftCore.commands.MoneyCommand;
 import fr.piricraft.piricraftCore.listeners.PlayerConnectionListener;
 import fr.piricraft.piricraftCore.managers.DatabaseManager;
 import fr.piricraft.piricraftCore.managers.EconomyManager;
@@ -14,15 +15,20 @@ public final class PiricraftCore extends JavaPlugin {
     public void onEnable() {
         getLogger().info("PiricraftCore has started !");
 
-        // Register listener
+        // Initialize manager
         this.databaseManager = new DatabaseManager(this);
         this.databaseManager.initDatabase();
 
+        // Register listeners
         getServer().getPluginManager().registerEvents(
                 new PlayerConnectionListener(this.databaseManager),
                 this
         );
 
+        // Register commands
+        if (getCommand("money") != null) {
+            getCommand("money").setExecutor(new MoneyCommand(this.economyManager));
+        }
     }
 
     @Override
